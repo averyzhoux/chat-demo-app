@@ -39,7 +39,7 @@ def create_svg_with_padding(input_path, output_path, padding_ratio):
         print(f"❌ 找不到文件: {input_path}")
 
 if __name__ == "__main__":
-    PADDING_RATIO = 0.25
+    PADDING_RATIO = 0.45
     INPUT_FILE = "assets/deepseek.svg"             # 你的原始文件
     OUTPUT_FILE = "assets/icon.svg"     # 生成的新文件
 

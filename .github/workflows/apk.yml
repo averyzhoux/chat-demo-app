@@ -41,6 +41,9 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Run adjust script
+        run: python3 assets/adjust.py
+
       - name: Generate App Icons #自动生成并替换应用图标
         run: npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#0f172a'
 
