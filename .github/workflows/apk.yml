@@ -42,7 +42,7 @@ jobs:
         run: npx cap sync android
 
       - name: Generate App Icons #自动生成并替换应用图标
-        run: npx @capacitor/assets generate --android
+        run: npx @capacitor/assets generate --android -iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#0f172a'
 
       - name: Build Debug APK
         working-directory: android
