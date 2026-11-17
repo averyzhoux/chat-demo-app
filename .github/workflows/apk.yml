@@ -2,12 +2,14 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ build-apk ]
+    branches: [build-apk]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: # 允许这个 Action 写入仓库（发布 Release）
+      contents: write
 
     steps:
       - name: Checkout
@@ -39,12 +41,27 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      - name: Generate App Icons #自动生成并替换应用图标
+        run: npx @capacitor/assets generate --android
+
       - name: Build Debug APK
         working-directory: android
         run: chmod +x gradlew && ./gradlew assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: app-debug
+      #     path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      # - name: Rename APK
+      #   run: mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/ChatDemo-v1.0.${{ github.run_number }}.apk
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: app-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          tag_name: v1.0.${{ github.run_number }}
+          name: Chat Demo v1.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+          files: android/app/build/outputs/apk/debug/app-debug.apk
